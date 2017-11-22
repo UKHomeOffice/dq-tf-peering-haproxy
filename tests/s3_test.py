@@ -39,6 +39,9 @@ class TestE2E(unittest.TestCase):
     def test_s3_acl(self):
         self.assertEqual(self.result["HAProxy_Bucketname"]["aws_s3_bucket.HAProxy_Bucketname"]["acl"], "private")
 
+    def test_instance_ami(self):
+        self.assertEqual(self.result["HAProxy_Bucketname"]["aws_instance.HAProxyInstance"]["ami"], "foo")
+
 
 if __name__ == '__main__':
     unittest.main()
