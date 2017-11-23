@@ -14,7 +14,7 @@ class TestE2E(unittest.TestCase):
               skip_get_ec2_platforms = true
             }
             
-            module "HAProxy_Bucketname" {
+            module "root_modules" {
               source = "./mymodule"
               
               haproxy_bucket_name = "foo"
@@ -37,10 +37,10 @@ class TestE2E(unittest.TestCase):
         self.assertEqual(self.result["destroy"], False)
 
     def test_s3_acl(self):
-        self.assertEqual(self.result["HAProxy_Bucketname"]["aws_s3_bucket.HAProxy_Bucketname"]["acl"], "private")
+        self.assertEqual(self.result["root_modules"]["aws_s3_bucket.HAProxy_Bucketname"]["acl"], "private")
 
     def test_instance_ami(self):
-        self.assertEqual(self.result["HAProxy_Bucketname"]["aws_instance.HAProxyInstance"]["ami"], "foo")
+        self.assertEqual(self.result["root_modules"]["aws_instance.HAProxyInstance"]["ami"], "foo")
 
 
 if __name__ == '__main__':
