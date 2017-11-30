@@ -14,13 +14,15 @@ class TestE2E(unittest.TestCase):
               skip_get_ec2_platforms = true
             }
 
-            module "peering-haproxy" {
+            module "haproxy-instance" {
               source = "./mymodule"
 
               providers = {
                 aws = "aws"
               }
-                haproxy_bucket_name    = "testhaproxybucketname"
+                haproxy_subnet_id      = "1234"
+                peeringvpc_id          = "1234"
+                haproxy_bucket_name    = "haproxyconfigbucket"
                 name_prefix            = "dq-"
                 region                 = "eu-west-2"
             }
@@ -30,17 +32,17 @@ class TestE2E(unittest.TestCase):
     def test_root_destroy(self):
         self.assertEqual(self.result["destroy"], False)
 
-    def test_az(self):
-        self.assertEqual(self.result['peering-haproxy']["aws_subnet.PeeringSubnet2"]["availability_zone"], "eu-west-2a")
+    def test_name_prefix_haproxy(self):
+        self.assertEqual(self.result['haproxy-instance']["aws_instance.peeringhaproxy"]["tags.Name"], "t2-micro")
 
-    def test_name_prefix_PeeringHAProxy(self):
-        self.assertEqual(self.result['peering-haproxy']["aws_instance.PeeringHAProxy"]["tags.Name"], "dq-haproxy-ec2")
+    def test_name_prefix_peeringhaproxy(self):
+        self.assertEqual(self.result['haproxy-instance']["aws_instance.peeringhaproxy"]["tags.Name"], "dq-haproxy-ec2")
 
-    def test_name_prefix_HAProxy(self):
-        self.assertEqual(self.result['peering-haproxy']["aws_security_group.HAProxy"]["tags.Name"], "dq-haproxy-sg")
+    def test_name_prefix_haproxy(self):
+        self.assertEqual(self.result['haproxy-instance']["aws_security_group.haproxy"]["tags.Name"], "dq-haproxy-sg")
 
-    def test_name_prefix_HAProxy_Bucketname(self):
-        self.assertEqual(self.result['peering-haproxy']["aws_s3_bucket.HAProxy_Bucketname"]["tags.Name"], "dq-haproxy-s3-bucket")    
+    def test_name_prefix_haproxy_bucketname(self):
+        self.assertEqual(self.result['haproxy-instance']["aws_s3_bucket.haproxy_bucketname"]["tags.Name"], "dq-haproxy-s3-bucket")
 
 if __name__ == '__main__':
     unittest.main()

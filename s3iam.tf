@@ -1,7 +1,6 @@
-
 resource "aws_iam_policy" "HAProxyBucketPolicy" {
-  name        = "HAProxyBucketPolicy"
-  policy      = "${file("s3policy.json")}"
+  name   = "HAProxyBucketPolicy"
+  policy = "${file("s3policy.json")}"
 }
 
 resource "aws_iam_role" "HAProxyECServer2Role" {
@@ -16,6 +15,6 @@ resource "aws_iam_policy_attachment" "attachS3_bucket_policy" {
 }
 
 resource "aws_iam_instance_profile" "HAProxyServerInstanceProfile" {
-  name  = "HAProxyServerInstanceProfile"
+  name = "HAProxyServerInstanceProfile"
   role = "${aws_iam_role.HAProxyECServer2Role.name}"
 }

@@ -1,6 +1,7 @@
 variable "haproxy_bucket_name" {}
+variable "haproxy_subnet_id" {}
+variable "peeringvpc_id" {}
 variable "name_prefix" {}
-variable "region" {}
 
 locals {
   name_prefix = "${var.name_prefix}haproxy-"
@@ -26,19 +27,19 @@ data "aws_ami" "dq-peering-haproxy" {
   ]
 }
 
-resource "aws_instance" "PeeringHAProxy" {
+resource "aws_instance" "peeringhaproxy" {
   ami                    = "${data.aws_ami.dq-peering-haproxy.id}"
   instance_type          = "${var.instance_type}"
-  subnet_id              = "${module.peering.PeeringSubnet2}"
-  vpc_security_group_ids = ["${aws_security_group.HAProxy.id}"]
+  subnet_id              = "${var.haproxy_subnet_id}"
+  vpc_security_group_ids = ["${aws_security_group.haproxy.id}"]
 
   tags {
     Name = "${local.name_prefix}ec2"
   }
 }
 
-resource "aws_security_group" "HAProxy" {
-  vpc_id = "${aws_vpc.peeringvpc.id}"
+resource "aws_security_group" "haproxy" {
+  vpc_id = "${var.peeringvpc_id}"
 
   tags {
     Name = "${local.name_prefix}sg"
@@ -59,10 +60,10 @@ resource "aws_security_group" "HAProxy" {
   }
 }
 
-resource "aws_s3_bucket" "HAProxy_Bucketname" {
+resource "aws_s3_bucket" "haproxy_bucketname" {
   bucket = "${var.haproxy_bucket_name}"
   acl    = "private"
-  region   = "${var.region}"
+  region = "eu-west-2"
 
   tags {
     Name = "${local.name_prefix}s3-bucket"
