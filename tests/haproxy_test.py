@@ -24,7 +24,6 @@ class TestE2E(unittest.TestCase):
                 peeringvpc_id          = "1234"
                 haproxy_bucket_name    = "haproxyconfigbucket"
                 name_prefix            = "dq-"
-                region                 = "eu-west-2"
             }
         """
         self.result = Runner(self.snippet).result
