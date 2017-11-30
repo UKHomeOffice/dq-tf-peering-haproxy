@@ -4,7 +4,7 @@
     {
       "Effect": "Allow",
       "Action": ["s3:ListBucket"],
-      "Resource": ["arn:aws:s3:::nameofthetestbucket"]
+      "Resource": ["arn:aws:s3:::haproxyconfigbucket"]
     },
     {
       "Effect": "Allow",
@@ -12,7 +12,7 @@
         "s3:GetObject",
         "s3:ListObject"
       ],
-      "Resource": ["arn:aws:s3:::nameofthetestbucket/*"]
+      "Resource": ["arn:aws:s3:::haproxyconfigbucket/*"]
     }
   ]
 }
