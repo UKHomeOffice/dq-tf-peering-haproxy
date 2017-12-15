@@ -1,14 +1,16 @@
-variable "haproxy_bucket_name" {}
-variable "haproxy_subnet_id" {}
-variable "peeringvpc_id" {}
-variable "name_prefix" {}
-
 locals {
   name_prefix = "${var.name_prefix}haproxy-"
 }
 
-variable instance_type {
-  default = "t2.micro"
+resource "aws_subnet" "haproxy_subnet" {
+  vpc_id                  = "${var.peeringvpc_id}"
+  cidr_block              = "${var.haproxy_subnet_cidr_block}"
+  map_public_ip_on_launch = false
+  availability_zone       = "${var.az}"
+
+  tags {
+    Name = "${local.name_prefix}haproxy-subnet"
+  }
 }
 
 data "aws_ami" "dq-peering-haproxy" {
@@ -30,8 +32,9 @@ data "aws_ami" "dq-peering-haproxy" {
 resource "aws_instance" "peeringhaproxy" {
   ami                    = "${data.aws_ami.dq-peering-haproxy.id}"
   instance_type          = "${var.instance_type}"
-  subnet_id              = "${var.haproxy_subnet_id}"
+  subnet_id              = "${aws_subnet.haproxy_subnet.id}"
   vpc_security_group_ids = ["${aws_security_group.haproxy.id}"]
+  private_ip             = "${var.haproxy_ip}"
 
   tags {
     Name = "${local.name_prefix}ec2"
@@ -46,17 +49,23 @@ resource "aws_security_group" "haproxy" {
   }
 
   ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+
+    cidr_blocks = [
+      "${var.SGCIDRs}",
+    ]
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+
+    cidr_blocks = [
+      "${var.SGCIDRs}",
+    ]
   }
 }
 
