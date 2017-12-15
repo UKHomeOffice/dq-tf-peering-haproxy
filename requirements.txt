@@ -1,0 +1,9 @@
+# Linters
+pylint
+
+# Testing
+coverage
+
+# CI/CD
+drone
+docker
