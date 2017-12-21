@@ -1,10 +1,24 @@
-variable "haproxy_bucket_name" {}
 variable "peeringvpc_id" {}
 variable "haproxy_ip" {}
 variable "haproxy_subnet_cidr_block" {}
 
 variable "name_prefix" {
-  default = "dq-"
+  default = "dq-peering-"
+}
+
+variable "service" {
+  default     = "dq-peering-haproxy"
+  description = "As per naming standards in AWS-DQ-Network-Routing 0.5 document"
+}
+
+variable "environment" {
+  default     = "preprod"
+  description = "As per naming standards in AWS-DQ-Network-Routing 0.5 document"
+}
+
+variable "environment_group" {
+  default     = "dq-peering"
+  description = "As per naming standards in AWS-DQ-Network-Routing 0.5 document"
 }
 
 variable "az" {

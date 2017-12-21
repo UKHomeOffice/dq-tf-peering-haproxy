@@ -23,7 +23,6 @@ class TestE2E(unittest.TestCase):
                 haproxy_subnet_cidr_block = "1.2.3.0/24"
                 peeringvpc_id          = "1234"
                 haproxy_ip             = "1.2.3.4"
-                haproxy_bucket_name    = "haproxyconfigbucket"
                 name_prefix            = "dq-"
                 SGCIDRs                = ["1.2.3.0/24"]
                 az                     = "foo"
@@ -39,9 +38,6 @@ class TestE2E(unittest.TestCase):
 
     def test_name_sg_haproxy(self):
         self.assertEqual(self.result['haproxy-instance']["aws_security_group.haproxy"]["tags.Name"], "dq-haproxy-sg")
-
-    def test_name_prefix_bucketname(self):
-        self.assertEqual(self.result['haproxy-instance']["aws_s3_bucket.haproxy_bucketname"]["tags.Name"], "dq-haproxy-s3-bucket")
 
 if __name__ == '__main__':
     unittest.main()
