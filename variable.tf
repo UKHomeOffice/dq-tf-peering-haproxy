@@ -1,5 +1,5 @@
 variable "peeringvpc_id" {}
-variable "haproxy_ip" {}
+variable "haproxy_private_ip" {}
 variable "haproxy_subnet_cidr_block" {}
 
 variable "name_prefix" {

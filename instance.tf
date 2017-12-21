@@ -3,20 +3,26 @@ resource "aws_instance" "peeringhaproxy" {
   instance_type          = "${var.instance_type}"
   subnet_id              = "${aws_subnet.haproxy_subnet.id}"
   vpc_security_group_ids = ["${aws_security_group.haproxy.id}"]
-  private_ip             = "${var.haproxy_ip}"
+  private_ip             = "${var.haproxy_private_ip}"
 
   count = "${local.haproxy}"
 
-  tags {
-    Name = "${local.name_prefix}ec2"
+  tags = {
+    Name             = "ec2-${var.service}-rhel-${var.environment}"
+    Service          = "${var.service}"
+    Environment      = "${var.environment}"
+    EnvironmentGroup = "${var.environment_group}"
   }
 }
 
 resource "aws_security_group" "haproxy" {
   vpc_id = "${var.peeringvpc_id}"
 
-  tags {
-    Name = "${local.name_prefix}sg"
+  tags = {
+    Name             = "sg-${var.service}-${var.environment}"
+    Service          = "${var.service}"
+    Environment      = "${var.environment}"
+    EnvironmentGroup = "${var.environment_group}"
   }
 
   ingress {
