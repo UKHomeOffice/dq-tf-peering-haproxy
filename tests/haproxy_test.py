@@ -26,6 +26,16 @@ class TestE2E(unittest.TestCase):
                 name_prefix            = "dq-"
                 SGCIDRs                = ["1.2.3.0/24"]
                 az                     = "foo"
+                route_table_id         = "1234"
+                s3_bucket_name = {
+                    config = "abcd"
+                    log = "abcd"
+                }
+
+                s3_bucket_acl = {
+                    config = "private"
+                    log = "log-delivery-write"
+                }
             }
         """
         self.result = Runner(self.snippet).result
