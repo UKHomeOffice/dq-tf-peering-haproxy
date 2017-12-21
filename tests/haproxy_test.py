@@ -22,7 +22,7 @@ class TestE2E(unittest.TestCase):
               }
                 haproxy_subnet_cidr_block = "1.2.3.0/24"
                 peeringvpc_id          = "1234"
-                haproxy_ip             = "1.2.3.4"
+                haproxy_private_ip     = "1.2.3.4"
                 name_prefix            = "dq-"
                 SGCIDRs                = ["1.2.3.0/24"]
                 az                     = "foo"
@@ -34,10 +34,10 @@ class TestE2E(unittest.TestCase):
         self.assertEqual(self.result["destroy"], False)
 
     def test_name_prefix_peeringhaproxy(self):
-        self.assertEqual(self.result['haproxy-instance']["aws_instance.peeringhaproxy"]["tags.Name"], "dq-haproxy-ec2")
+        self.assertEqual(self.result['haproxy-instance']["aws_instance.peeringhaproxy"]["tags.Name"], "ec2-dq-peering-haproxy-rhel-preprod")
 
     def test_name_sg_haproxy(self):
-        self.assertEqual(self.result['haproxy-instance']["aws_security_group.haproxy"]["tags.Name"], "dq-haproxy-sg")
+        self.assertEqual(self.result['haproxy-instance']["aws_security_group.haproxy"]["tags.Name"], "sg-dq-peering-haproxy-preprod")
 
 if __name__ == '__main__':
     unittest.main()
