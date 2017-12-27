@@ -4,6 +4,7 @@ resource "aws_instance" "peeringhaproxy" {
   subnet_id              = "${aws_subnet.haproxy_subnet.id}"
   vpc_security_group_ids = ["${aws_security_group.haproxy.id}"]
   private_ip             = "${var.haproxy_private_ip}"
+  user_data              = "${var.s3_bucket_name}"
 
   count = "${local.haproxy}"
 

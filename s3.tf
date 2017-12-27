@@ -1,11 +1,3 @@
-resource "random_string" "bucket_string" {
-  length  = 4
-  upper   = false
-  number  = false
-  special = false
-  lower   = true
-}
-
 resource "aws_kms_key" "haproxy_config_bucket_key" {
   description             = "This key is used to encrypt Haproxy config bucket objects"
   deletion_window_in_days = 7
@@ -19,7 +11,7 @@ resource "aws_kms_key" "haproxy_config_bucket_key" {
 }
 
 resource "aws_s3_bucket" "haproxy_config_bucket" {
-  bucket = "${var.s3_bucket_name}-${random_string.bucket_string.result}"
+  bucket = "${var.s3_bucket_name}"
   acl    = "${var.s3_bucket_acl}"
   region = "${var.region}"
 
@@ -37,7 +29,7 @@ resource "aws_s3_bucket" "haproxy_config_bucket" {
   }
 
   logging {
-    target_bucket = "${var.archive_s3_bucket}"
+    target_bucket = "${var.log_archive_s3_bucket}"
     target_prefix = "${var.service}-log/"
   }
 
@@ -47,6 +39,61 @@ resource "aws_s3_bucket" "haproxy_config_bucket" {
     Environment      = "${var.environment}"
     EnvironmentGroup = "${var.environment_group}"
   }
+}
+
+resource "aws_iam_policy" "haproxy_bucket_policy" {
+  name = "haproxy_bucket_policy"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": ["${aws_s3_bucket.haproxy_config_bucket.arn}"]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:ListObject"
+      ],
+      "Resource": ["${aws_s3_bucket.haproxy_config_bucket.arn}/*"]
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role" "haproxy_ec2_server_role" {
+  name = "haproxy_ec2_server_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy_attachment" "attachs3_bucket_policy" {
+  name       = "attachs3_bucket_policy"
+  roles      = ["${aws_iam_role.haproxy_ec2_server_role.name}"]
+  policy_arn = "${aws_iam_policy.haproxy_bucket_policy.arn}"
+}
+
+resource "aws_iam_instance_profile" "haproxy_server_instance_profile" {
+  name = "haproxy_server_instance_profile"
+  role = "${aws_iam_role.haproxy_ec2_server_role.name}"
 }
 
 resource "aws_vpc_endpoint" "haproxy_config_s3_endpoint" {
