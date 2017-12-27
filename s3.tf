@@ -1,3 +1,11 @@
+resource "random_string" "bucket_string" {
+  length  = 4
+  upper   = false
+  number  = false
+  special = false
+  lower   = true
+}
+
 resource "aws_kms_key" "haproxy_config_bucket_key" {
   description             = "This key is used to encrypt Haproxy config bucket objects"
   deletion_window_in_days = 7
@@ -11,7 +19,7 @@ resource "aws_kms_key" "haproxy_config_bucket_key" {
 }
 
 resource "aws_s3_bucket" "haproxy_config_bucket" {
-  bucket = "${var.s3_bucket_name}"
+  bucket = "${var.s3_bucket_name}-${random_string.bucket_string.result}"
   acl    = "${var.s3_bucket_acl}"
   region = "${var.region}"
 
@@ -42,6 +50,12 @@ resource "aws_s3_bucket" "haproxy_config_bucket" {
 }
 
 resource "aws_vpc_endpoint" "haproxy_config_s3_endpoint" {
+  vpc_id          = "${var.peeringvpc_id}"
+  route_table_ids = ["${var.route_table_id}"]
+  service_name    = "com.amazonaws.eu-west-2.s3"
+}
+
+resource "aws_vpc_endpoint" "log_s3_endpoint" {
   vpc_id          = "${var.peeringvpc_id}"
   route_table_ids = ["${var.route_table_id}"]
   service_name    = "com.amazonaws.eu-west-2.s3"
