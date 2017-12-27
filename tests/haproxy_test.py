@@ -29,7 +29,7 @@ class TestE2E(unittest.TestCase):
                 route_table_id         = "1234"
                 s3_bucket_name         = "abcd"
                 s3_bucket_acl          = "abcd"
-                archive_s3_bucket      = "abcd"
+                log_archive_s3_bucket      = "abcd"
             }
         """
         self.result = Runner(self.snippet).result
