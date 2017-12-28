@@ -6,6 +6,10 @@ variable "s3_bucket_name" {}
 variable "s3_bucket_acl" {}
 variable "route_table_id" {}
 
+variable "key_name" {
+  default = "test_instance"
+}
+
 variable "region" {
   default = "eu-west-2"
 }

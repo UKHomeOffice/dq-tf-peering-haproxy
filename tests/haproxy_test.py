@@ -43,9 +43,6 @@ class TestE2E(unittest.TestCase):
     def test_name_sg_haproxy(self):
         self.assertEqual(self.result['haproxy-instance']["aws_security_group.haproxy"]["tags.Name"], "sg-dq-peering-haproxy-preprod")
 
-    def test_name_config_kms(self):
-        self.assertEqual(self.result['haproxy-instance']["aws_kms_key.haproxy_config_bucket_key"]["tags.Name"], "s3-dq-peering-haproxy-config-kms-key-preprod")
-
     def test_name_config_bucket_name(self):
         self.assertEqual(self.result['haproxy-instance']["aws_s3_bucket.haproxy_config_bucket"]["tags.Name"], "s3-dq-peering-haproxy-config-bucket-preprod")
 
