@@ -59,6 +59,23 @@ resource "aws_iam_policy" "haproxy_bucket_policy" {
 EOF
 }
 
+resource "aws_iam_policy" "haproxy_bucket_decrypt" {
+  name = "haproxy_bucket_decrypt"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "kms:Decrypt"
+    ],
+    "Resource": ["${aws_kms_key.haproxy_config_bucket_key.arn}"]
+  }
+}
+EOF
+}
+
 resource "aws_iam_role" "haproxy_ec2_server_role" {
   name = "haproxy_ec2_server_role"
 
@@ -69,7 +86,8 @@ resource "aws_iam_role" "haproxy_ec2_server_role" {
     {
       "Effect": "Allow",
       "Principal": {
-        "Service": "ec2.amazonaws.com"
+        "Service": "ec2.amazonaws.com",
+        "Service": "s3.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     }
@@ -82,6 +100,12 @@ resource "aws_iam_policy_attachment" "attachs3_bucket_policy" {
   name       = "attachs3_bucket_policy"
   roles      = ["${aws_iam_role.haproxy_ec2_server_role.name}"]
   policy_arn = "${aws_iam_policy.haproxy_bucket_policy.arn}"
+}
+
+resource "aws_iam_policy_attachment" "attachs3_haproxy_bucket_decrypt" {
+  name       = "attachs3_haproxy_bucket_decrypt"
+  roles      = ["${aws_iam_role.haproxy_ec2_server_role.name}"]
+  policy_arn = "${aws_iam_policy.haproxy_bucket_decrypt.arn}"
 }
 
 resource "aws_iam_instance_profile" "haproxy_server_instance_profile" {
