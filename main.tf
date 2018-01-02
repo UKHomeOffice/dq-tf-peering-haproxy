@@ -13,3 +13,8 @@ resource "aws_subnet" "haproxy_subnet" {
     Name = "${local.name_prefix}subnet"
   }
 }
+
+resource "aws_route_table_association" "haproxy_subnet" {
+  subnet_id      = "${aws_subnet.haproxy_subnet.id}"
+  route_table_id = "${var.route_table_id}"
+}
