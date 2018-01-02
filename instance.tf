@@ -6,6 +6,7 @@ resource "aws_instance" "peeringhaproxy" {
   private_ip             = "${var.haproxy_private_ip}"
   user_data              = "${var.s3_bucket_name}"
   key_name               = "${var.key_name}"
+  iam_instance_profile   = "${aws_iam_instance_profile.haproxy_server_instance_profile.id}"
 
   count = "${local.haproxy}"
 
