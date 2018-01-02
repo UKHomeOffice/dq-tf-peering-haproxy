@@ -44,7 +44,7 @@ resource "aws_security_group" "haproxy" {
     protocol  = "-1"
 
     cidr_blocks = [
-      "${var.SGCIDRs}",
+      "0.0.0.0/0",
     ]
   }
 }
