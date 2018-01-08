@@ -34,6 +34,13 @@ resource "aws_s3_bucket" "haproxy_config_bucket" {
   }
 }
 
+resource "aws_s3_bucket_object" "haproxy_config" {
+  bucket     = "${aws_s3_bucket.haproxy_config_bucket.bucket}"
+  kms_key_id = "${aws_kms_key.haproxy_config_bucket_key.arn}"
+  key        = "haproxy.cfg"
+  source     = "/config/haproxy.cfg"
+}
+
 resource "aws_iam_policy" "haproxy_bucket_policy" {
   name = "haproxy_bucket_policy"
 
