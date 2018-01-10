@@ -6,6 +6,11 @@ variable "s3_bucket_name" {}
 variable "s3_bucket_acl" {}
 variable "route_table_id" {}
 
+variable "naming_suffix" {
+  default     = false
+  description = "Naming suffix for tags, value passed from dq-tf-apps"
+}
+
 variable "key_name" {
   default = "test_instance"
 }
@@ -24,16 +29,6 @@ variable "name_prefix" {
 
 variable "service" {
   default     = "dq-peering-haproxy"
-  description = "As per naming standards in AWS-DQ-Network-Routing 0.5 document"
-}
-
-variable "environment" {
-  default     = "preprod"
-  description = "As per naming standards in AWS-DQ-Network-Routing 0.5 document"
-}
-
-variable "environment_group" {
-  default     = "dq-peering"
   description = "As per naming standards in AWS-DQ-Network-Routing 0.5 document"
 }
 

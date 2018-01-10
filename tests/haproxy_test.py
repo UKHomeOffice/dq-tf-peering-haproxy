@@ -29,7 +29,8 @@ class TestE2E(unittest.TestCase):
                 route_table_id         = "1234"
                 s3_bucket_name         = "abcd"
                 s3_bucket_acl          = "abcd"
-                log_archive_s3_bucket      = "abcd"
+                log_archive_s3_bucket  = "abcd"
+                naming_suffix          = "peering-preprod-dq"
             }
         """
         self.result = Runner(self.snippet).result
@@ -37,14 +38,14 @@ class TestE2E(unittest.TestCase):
     def test_root_destroy(self):
         self.assertEqual(self.result["destroy"], False)
 
-    def test_name_prefix_peeringhaproxy(self):
-        self.assertEqual(self.result['haproxy-instance']["aws_instance.peeringhaproxy"]["tags.Name"], "ec2-dq-peering-haproxy-rhel-preprod")
+    def test_name_peeringhaproxy(self):
+        self.assertEqual(self.result['haproxy-instance']["aws_instance.peeringhaproxy"]["tags.Name"], "ec2-haproxy-peering-preprod-dq")
 
     def test_name_sg_haproxy(self):
-        self.assertEqual(self.result['haproxy-instance']["aws_security_group.haproxy"]["tags.Name"], "sg-dq-peering-haproxy-preprod")
+        self.assertEqual(self.result['haproxy-instance']["aws_security_group.haproxy"]["tags.Name"], "sg-haproxy-peering-preprod-dq")
 
     def test_name_config_bucket_name(self):
-        self.assertEqual(self.result['haproxy-instance']["aws_s3_bucket.haproxy_config_bucket"]["tags.Name"], "s3-dq-peering-haproxy-config-bucket-preprod")
+        self.assertEqual(self.result['haproxy-instance']["aws_s3_bucket.haproxy_config_bucket"]["tags.Name"], "s3-haproxy-peering-preprod-dq")
 
 
 if __name__ == '__main__':

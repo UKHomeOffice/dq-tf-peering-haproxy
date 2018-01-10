@@ -1,6 +1,6 @@
 locals {
-  name_prefix = "${var.name_prefix}haproxy-"
-  haproxy     = 1
+  naming_suffix = "haproxy-${var.naming_suffix}"
+  haproxy       = 1
 }
 
 resource "aws_subnet" "haproxy_subnet" {
@@ -10,7 +10,7 @@ resource "aws_subnet" "haproxy_subnet" {
   availability_zone       = "${var.az}"
 
   tags {
-    Name = "${local.name_prefix}subnet"
+    Name = "subnet-${local.naming_suffix}"
   }
 }
 

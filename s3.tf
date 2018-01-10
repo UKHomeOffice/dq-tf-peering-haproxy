@@ -27,10 +27,7 @@ resource "aws_s3_bucket" "haproxy_config_bucket" {
   }
 
   tags = {
-    Name             = "s3-${var.service}-config-bucket-${var.environment}"
-    Service          = "${var.service}"
-    Environment      = "${var.environment}"
-    EnvironmentGroup = "${var.environment_group}"
+    Name = "s3-${local.naming_suffix}"
   }
 }
 
