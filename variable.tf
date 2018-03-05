@@ -44,3 +44,7 @@ variable "SGCIDRs" {
   description = "Ingress CIDR block for the HAProxy Security Group."
   type        = "list"
 }
+
+variable "haproxy_private_ip2" {
+  default = "10.3.0.12"
+}
