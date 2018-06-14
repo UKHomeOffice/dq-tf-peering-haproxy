@@ -45,7 +45,7 @@ resource "aws_instance" "peeringhaproxy189" {
   count = "${local.haproxy}"
 
   tags = {
-    Name = "ec2-${local.naming_suffix}"
+    Name = "ec2-${local.naming_suffix_ha_189}"
   }
 }
 
