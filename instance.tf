@@ -49,7 +49,6 @@ resource "aws_instance" "peeringhaproxy189" {
   }
 }
 
-
 resource "aws_security_group" "haproxy" {
   vpc_id = "${var.peeringvpc_id}"
 
