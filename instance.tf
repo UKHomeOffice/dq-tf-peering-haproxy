@@ -10,6 +10,14 @@ resource "aws_instance" "peeringhaproxy" {
 
   count = "${local.haproxy}"
 
+  lifecycle {
+    prevent_destroy = true
+
+    ignore_changes = [
+      "ami",
+    ]
+  }
+
   tags = {
     Name = "ec2-${local.naming_suffix}"
   }
@@ -27,6 +35,14 @@ resource "aws_instance" "peeringhaproxy2" {
 
   count = "${local.haproxy}"
 
+  lifecycle {
+    prevent_destroy = true
+
+    ignore_changes = [
+      "ami",
+    ]
+  }
+
   tags = {
     Name = "ec2-${local.naming_suffix}"
   }
@@ -43,6 +59,14 @@ resource "aws_instance" "peeringhaproxy189" {
   iam_instance_profile   = "${aws_iam_instance_profile.haproxy_server_instance_profile.id}"
 
   count = "${local.haproxy}"
+
+  lifecycle {
+    prevent_destroy = true
+
+    ignore_changes = [
+      "ami",
+    ]
+  }
 
   tags = {
     Name = "ec2-${local.naming_suffix_ha_189}"
