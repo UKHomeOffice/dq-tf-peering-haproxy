@@ -48,3 +48,7 @@ variable "SGCIDRs" {
 variable "haproxy_private_ip2" {
   default = "10.3.0.12"
 }
+
+variable "haproxy_private_ip3" {
+  default = "10.3.0.100"
+}
