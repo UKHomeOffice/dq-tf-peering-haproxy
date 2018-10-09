@@ -31,6 +31,11 @@ resource "aws_s3_bucket" "haproxy_config_bucket" {
   }
 }
 
+resource "aws_s3_bucket_metric" "haprox_config_bucket-logging" {
+  bucket = "${var.s3_bucket_name}"
+  name   = "EntireBucket"
+}
+
 resource "aws_iam_policy" "haproxy_bucket_policy" {
   name = "haproxy_bucket_policy"
 
