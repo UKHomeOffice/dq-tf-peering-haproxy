@@ -33,7 +33,7 @@ resource "aws_s3_bucket" "haproxy_config_bucket" {
 
 resource "aws_s3_bucket_metric" "haprox_config_bucket_logging" {
   bucket = "${var.s3_bucket_name}"
-  name   = "EntireBucket"
+  name   = "haproxy_config_bucket_metric"
 }
 
 resource "aws_iam_policy" "haproxy_bucket_policy" {
