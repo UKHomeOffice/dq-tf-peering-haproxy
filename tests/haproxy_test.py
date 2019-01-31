@@ -23,7 +23,7 @@ class TestE2E(unittest.TestCase):
                 haproxy_subnet_cidr_block = "1.2.3.0/24"
                 peeringvpc_id          = "1234"
                 haproxy_private_ip     = "1.2.3.4"
-                haproxy_private_ip     = "1.2.3.4"
+                haproxy_private_ip2    = "1.2.3.3"
                 name_prefix            = "dq-"
                 SGCIDRs                = ["1.2.3.0/24"]
                 az                     = "foo"
