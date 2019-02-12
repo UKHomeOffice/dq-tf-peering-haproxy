@@ -8,8 +8,6 @@ resource "aws_instance" "peeringhaproxy" {
   key_name               = "${var.key_name}"
   iam_instance_profile   = "${aws_iam_instance_profile.haproxy_server_instance_profile.id}"
 
-  count = "${local.haproxy}"
-
   lifecycle {
     prevent_destroy = true
 
