@@ -1,6 +1,5 @@
 locals {
   naming_suffix = "haproxy-${var.naming_suffix}"
-  haproxy       = 1
 }
 
 resource "aws_subnet" "haproxy_subnet" {
