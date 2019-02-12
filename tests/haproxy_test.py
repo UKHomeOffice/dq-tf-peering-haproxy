@@ -23,7 +23,8 @@ class TestE2E(unittest.TestCase):
                 haproxy_subnet_cidr_block = "1.2.3.0/24"
                 peeringvpc_id          = "1234"
                 haproxy_private_ip     = "1.2.3.4"
-                haproxy_private_ip2    = "1.2.3.3"
+                haproxy_private_ip2    = "1.2.3.4"
+                haproxy_private_ip3    = "1.2.3.4"
                 name_prefix            = "dq-"
                 SGCIDRs                = ["1.2.3.0/24"]
                 az                     = "foo"
@@ -48,6 +49,8 @@ class TestE2E(unittest.TestCase):
     def test_name_config_bucket_name(self):
         self.assertEqual(self.result['haproxy-instance']["aws_s3_bucket.haproxy_config_bucket"]["tags.Name"], "s3-haproxy-peering-preprod-dq")
 
+    def test_name_instance3_name(self):
+        self.assertEqual(self.result['haproxy-instance']["aws_instance.peeringhaproxy3"]["tags.Name"], "ec2-fms-test-haproxy-peering-preprod-dq")
 
 if __name__ == '__main__':
     unittest.main()
