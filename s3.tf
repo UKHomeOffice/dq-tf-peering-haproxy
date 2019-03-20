@@ -31,7 +31,31 @@ resource "aws_s3_bucket" "haproxy_config_bucket" {
   }
 }
 
-resource "aws_s3_bucket_metric" "haprox_config_bucket_logging" {
+resource "aws_s3_bucket_policy" "haproxy_config_bucket" {
+  bucket = "${var.s3_bucket_name}"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "HTTP",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "*",
+      "Resource": "arn:aws:s3:::${var.s3_bucket_name}/*",
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_s3_bucket_metric" "haproxy_config_bucket_logging" {
   bucket = "${var.s3_bucket_name}"
   name   = "haproxy_config_bucket_metric"
 }
