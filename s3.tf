@@ -1,6 +1,7 @@
 resource "aws_kms_key" "haproxy_config_bucket_key" {
   description             = "This key is used to encrypt Haproxy config bucket objects"
   deletion_window_in_days = 7
+  enable_key_rotation     = true
 }
 
 resource "aws_s3_bucket" "haproxy_config_bucket" {
