@@ -5,3 +5,7 @@ output "haproxy_subnet_id" {
 output "iam_roles" {
   value = ["${aws_iam_role.haproxy_ec2_server_role.id}"]
 }
+
+output "haproxy_config_bucket" {
+  value = "${aws_s3_bucket.haproxy_config_bucket.arn}"
+}
