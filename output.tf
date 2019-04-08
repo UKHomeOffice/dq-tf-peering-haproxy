@@ -7,5 +7,5 @@ output "iam_roles" {
 }
 
 output "haproxy_config_bucket" {
-  value = "${aws_s3_bucket.haproxy_config_bucket.arn}"
+  value = "${aws_s3_bucket.haproxy_config_bucket.id}"
 }
