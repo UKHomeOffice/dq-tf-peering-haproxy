@@ -9,3 +9,7 @@ output "iam_roles" {
 output "haproxy_config_bucket" {
   value = "${aws_s3_bucket.haproxy_config_bucket.id}"
 }
+
+output "haproxy_config_bucket" {
+  value = "${aws_kms_key.haproxy_config_bucket_key.arn}"
+}
