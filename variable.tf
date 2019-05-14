@@ -1,7 +1,6 @@
 variable "peeringvpc_id" {}
 variable "haproxy_private_ip" {}
 variable "haproxy_private_ip2" {}
-variable "haproxy_private_ip3" {}
 variable "haproxy_subnet_cidr_block" {}
 variable "log_archive_s3_bucket" {}
 variable "s3_bucket_name" {}
