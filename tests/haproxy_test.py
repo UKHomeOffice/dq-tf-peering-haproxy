@@ -34,19 +34,17 @@ class TestE2E(unittest.TestCase):
                 naming_suffix          = "peering-preprod-dq"
             }
         """
-        self.result = Runner(self.snippet).result
-
-    def test_root_destroy(self):
-        self.assertEqual(self.result["destroy"], False)
+        self.runner = Runner(self.snippet)
+        self.result = self.runner.result
 
     def test_name_peeringhaproxy(self):
-        self.assertEqual(self.result['haproxy-instance']["aws_instance.peeringhaproxy"]["tags.Name"], "ec2-haproxy-peering-preprod-dq")
+        self.assertEqual(self.runner.get_value("module.haproxy-instance.aws_instance.peeringhaproxy", "tags"), {'Name': "ec2-haproxy-peering-preprod-dq"})
 
     def test_name_sg_haproxy(self):
-        self.assertEqual(self.result['haproxy-instance']["aws_security_group.haproxy"]["tags.Name"], "sg-haproxy-peering-preprod-dq")
+        self.assertEqual(self.runner.get_value("module.haproxy-instance.aws_security_group.haproxy", "tags"), {'Name': "sg-haproxy-peering-preprod-dq"})
 
     def test_name_config_bucket_name(self):
-        self.assertEqual(self.result['haproxy-instance']["aws_s3_bucket.haproxy_config_bucket"]["tags.Name"], "s3-haproxy-peering-preprod-dq")
+        self.assertEqual(self.runner.get_value("module.haproxy-instance.aws_s3_bucket.haproxy_config_bucket", "tags"), {'Name': "s3-haproxy-peering-preprod-dq"})
 
 if __name__ == '__main__':
     unittest.main()

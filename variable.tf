@@ -1,11 +1,26 @@
-variable "peeringvpc_id" {}
-variable "haproxy_private_ip" {}
-variable "haproxy_private_ip2" {}
-variable "haproxy_subnet_cidr_block" {}
-variable "log_archive_s3_bucket" {}
-variable "s3_bucket_name" {}
-variable "s3_bucket_acl" {}
-variable "route_table_id" {}
+variable "peeringvpc_id" {
+}
+
+variable "haproxy_private_ip" {
+}
+
+variable "haproxy_private_ip2" {
+}
+
+variable "haproxy_subnet_cidr_block" {
+}
+
+variable "log_archive_s3_bucket" {
+}
+
+variable "s3_bucket_name" {
+}
+
+variable "s3_bucket_acl" {
+}
+
+variable "route_table_id" {
+}
 
 variable "naming_suffix" {
   default     = false
@@ -43,5 +58,6 @@ variable "instance_type" {
 
 variable "SGCIDRs" {
   description = "Ingress CIDR block for the HAProxy Security Group."
-  type        = "list"
+  type        = list(string)
 }
+
