@@ -5,14 +5,14 @@ resource "aws_kms_key" "haproxy_config_bucket_key" {
 }
 
 resource "aws_s3_bucket" "haproxy_config_bucket" {
-  bucket = "${var.s3_bucket_name}"
-  acl    = "${var.s3_bucket_acl}"
-  region = "${var.region}"
+  bucket = var.s3_bucket_name
+  acl    = var.s3_bucket_acl
+  region = var.region
 
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        kms_master_key_id = "${aws_kms_key.haproxy_config_bucket_key.arn}"
+        kms_master_key_id = aws_kms_key.haproxy_config_bucket_key.arn
         sse_algorithm     = "aws:kms"
       }
     }
@@ -23,7 +23,7 @@ resource "aws_s3_bucket" "haproxy_config_bucket" {
   }
 
   logging {
-    target_bucket = "${var.log_archive_s3_bucket}"
+    target_bucket = var.log_archive_s3_bucket
     target_prefix = "${var.service}-log/"
   }
 
@@ -33,7 +33,7 @@ resource "aws_s3_bucket" "haproxy_config_bucket" {
 }
 
 resource "aws_s3_bucket_policy" "haproxy_config_bucket" {
-  bucket = "${var.s3_bucket_name}"
+  bucket = var.s3_bucket_name
 
   policy = <<POLICY
 {
@@ -54,10 +54,11 @@ resource "aws_s3_bucket_policy" "haproxy_config_bucket" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_s3_bucket_metric" "haproxy_config_bucket_logging" {
-  bucket = "${var.s3_bucket_name}"
+  bucket = var.s3_bucket_name
   name   = "haproxy_config_bucket_metric"
 }
 
@@ -84,6 +85,7 @@ resource "aws_iam_policy" "haproxy_bucket_policy" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_policy" "haproxy_bucket_decrypt" {
@@ -101,6 +103,7 @@ resource "aws_iam_policy" "haproxy_bucket_decrypt" {
   }
 }
 EOF
+
 }
 
 resource "aws_iam_role" "haproxy_ec2_server_role" {
@@ -121,27 +124,29 @@ resource "aws_iam_role" "haproxy_ec2_server_role" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_policy_attachment" "attachs3_bucket_policy" {
   name       = "attachs3_bucket_policy"
-  roles      = ["${aws_iam_role.haproxy_ec2_server_role.name}"]
-  policy_arn = "${aws_iam_policy.haproxy_bucket_policy.arn}"
+  roles      = [aws_iam_role.haproxy_ec2_server_role.name]
+  policy_arn = aws_iam_policy.haproxy_bucket_policy.arn
 }
 
 resource "aws_iam_policy_attachment" "attachs3_haproxy_bucket_decrypt" {
   name       = "attachs3_haproxy_bucket_decrypt"
-  roles      = ["${aws_iam_role.haproxy_ec2_server_role.name}"]
-  policy_arn = "${aws_iam_policy.haproxy_bucket_decrypt.arn}"
+  roles      = [aws_iam_role.haproxy_ec2_server_role.name]
+  policy_arn = aws_iam_policy.haproxy_bucket_decrypt.arn
 }
 
 resource "aws_iam_instance_profile" "haproxy_server_instance_profile" {
   name = "haproxy_server_instance_profile"
-  role = "${aws_iam_role.haproxy_ec2_server_role.name}"
+  role = aws_iam_role.haproxy_ec2_server_role.name
 }
 
 resource "aws_vpc_endpoint" "s3_endpoint" {
-  vpc_id          = "${var.peeringvpc_id}"
-  route_table_ids = ["${var.route_table_id}"]
+  vpc_id          = var.peeringvpc_id
+  route_table_ids = [var.route_table_id]
   service_name    = "com.amazonaws.eu-west-2.s3"
 }
+
