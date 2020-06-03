@@ -116,8 +116,10 @@ resource "aws_iam_role" "haproxy_ec2_server_role" {
     {
       "Effect": "Allow",
       "Principal": {
-        "Service": "ec2.amazonaws.com",
-        "Service": "s3.amazonaws.com"
+        "Service": [
+                    "ec2.amazonaws.com",
+                    "s3.amazonaws.com"
+        ]
       },
       "Action": "sts:AssumeRole"
     }
@@ -149,4 +151,3 @@ resource "aws_vpc_endpoint" "s3_endpoint" {
   route_table_ids = [var.route_table_id]
   service_name    = "com.amazonaws.eu-west-2.s3"
 }
-
