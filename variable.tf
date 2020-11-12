@@ -53,11 +53,10 @@ variable "az" {
 }
 
 variable "instance_type" {
-  default = "t2.micro"
+  default = "t3.micro"
 }
 
 variable "SGCIDRs" {
   description = "Ingress CIDR block for the HAProxy Security Group."
   type        = list(string)
 }
-
