@@ -31,10 +31,6 @@ variable "key_name" {
   default = "test_instance"
 }
 
-variable "region" {
-  default = "eu-west-2"
-}
-
 variable "s3_bucket_visibility" {
   default = "private"
 }
