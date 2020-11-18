@@ -32,6 +32,7 @@ class TestE2E(unittest.TestCase):
                 s3_bucket_acl          = "abcd"
                 log_archive_s3_bucket  = "abcd"
                 naming_suffix          = "peering-preprod-dq"
+                namespace              = "abcd"
             }
         """
         self.runner = Runner(self.snippet)
