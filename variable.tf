@@ -48,8 +48,15 @@ variable "az" {
   default = "eu-west-2a"
 }
 
-variable "instance_type" {
+variable "namespace" {
+}
+
+variable "instance_type_notprod" {
   default = "t3.micro"
+}
+
+variable "instance_type_prod" {
+  default = "t2.micro"
 }
 
 variable "SGCIDRs" {
