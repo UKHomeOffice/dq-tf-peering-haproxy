@@ -1,6 +1,6 @@
 resource "aws_instance" "peeringhaproxy" {
   ami                    = data.aws_ami.dq-peering-haproxy.id
-  instance_type          = var.instance_type
+  instance_type          = var.namespace == "prod" ? var.instance_type_prod : var.instance_type_notprod
   subnet_id              = aws_subnet.haproxy_subnet.id
   vpc_security_group_ids = [aws_security_group.haproxy.id]
   private_ip             = var.haproxy_private_ip
@@ -21,7 +21,7 @@ resource "aws_instance" "peeringhaproxy" {
 
 resource "aws_instance" "peeringhaproxy2" {
   ami                    = data.aws_ami.dq-peering-haproxy.id
-  instance_type          = var.instance_type
+  instance_type          = var.namespace == "prod" ? var.instance_type_prod : var.instance_type_notprod
   subnet_id              = aws_subnet.haproxy_subnet.id
   vpc_security_group_ids = [aws_security_group.haproxy.id]
   private_ip             = var.haproxy_private_ip2
@@ -65,4 +65,3 @@ resource "aws_security_group" "haproxy" {
     ]
   }
 }
-
