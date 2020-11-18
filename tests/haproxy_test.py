@@ -29,7 +29,7 @@ class TestE2E(unittest.TestCase):
                 az                     = "foo"
                 route_table_id         = "1234"
                 s3_bucket_name         = "abcd"
-                s3_bucket_acl          = "abcd"
+                s3_bucket_acl          = "private"
                 log_archive_s3_bucket  = "abcd"
                 naming_suffix          = "peering-preprod-dq"
                 namespace              = "notprod"
