@@ -56,7 +56,7 @@ variable "instance_type_notprod" {
 }
 
 variable "instance_type_prod" {
-  default = "t2.micro"
+  default = "t3.micro"
 }
 
 variable "SGCIDRs" {
