@@ -11,7 +11,10 @@ resource "aws_instance" "peeringhaproxy" {
   lifecycle {
     prevent_destroy = true
 
-    ignore_changes = [ami]
+    ignore_changes = [
+      ami,
+      instance_type,
+    ]
   }
 
   tags = {
@@ -32,7 +35,10 @@ resource "aws_instance" "peeringhaproxy2" {
   lifecycle {
     prevent_destroy = true
 
-    ignore_changes = [ami]
+    ignore_changes = [
+      ami,
+      instance_type,
+    ]
   }
 
   tags = {
