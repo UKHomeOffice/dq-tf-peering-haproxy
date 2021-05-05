@@ -13,4 +13,3 @@ output "haproxy_config_bucket" {
 output "haproxy_config_bucket_key" {
   value = aws_kms_key.haproxy_config_bucket_key.arn
 }
-
