@@ -60,7 +60,6 @@ resource "aws_instance" "peeringhaproxy2" {
   subnet_id              = aws_subnet.haproxy_subnet.id
   vpc_security_group_ids = [aws_security_group.haproxy.id]
   private_ip             = var.haproxy_private_ip2
-  user_data              = var.s3_bucket_name
   key_name               = var.key_name
   iam_instance_profile   = aws_iam_instance_profile.haproxy_server_instance_profile.id
 
