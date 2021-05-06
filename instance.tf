@@ -6,7 +6,7 @@ resource "aws_iam_role_policy_attachment" "cloud_watch_agent" {
 module "ec2_alarms_peeringhaproxy" {
   source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2"
   naming_suffix   = local.naming_suffix
-  environment     = var.environment
+  namespace       = var.environment
   pipeline_name   = "peeringhaproxy"
   ec2_instance_id = aws_instance.peeringhaproxy.id
 }
@@ -49,7 +49,7 @@ EOF
 # module "peeringhaproxy2" {
 #   source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2"
 #   naming_suffix   = local.naming_suffix
-#   environment     = var.environment
+#   namespace     = var.environment
 #   pipeline_name   = "peeringhaproxy2"
 #   ec2_instance_id = aws_instance.peeringhaproxy2.id
 # }
