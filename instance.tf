@@ -3,13 +3,13 @@ resource "aws_iam_role_policy_attachment" "cloud_watch_agent" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
-# module "ec2_alarms_peeringhaproxy" {
-#   source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2"
-#   naming_suffix   = local.naming_suffix
-#   environment     = var.environment
-#   pipeline_name   = "peeringhaproxy"
-#   ec2_instance_id = aws_instance.peeringhaproxy[0].id
-# }
+module "ec2_alarms_peeringhaproxy" {
+  source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2"
+  naming_suffix   = local.naming_suffix
+  environment     = var.environment
+  pipeline_name   = "peeringhaproxy"
+  ec2_instance_id = aws_instance.peeringhaproxy[0].id
+}
 
 resource "aws_instance" "peeringhaproxy" {
   ami                    = data.aws_ami.dq-peering-haproxy.id
@@ -35,7 +35,10 @@ EOF
   lifecycle {
     prevent_destroy = true
 
-    ignore_changes = [ami]
+    ignore_changes = [
+      user_data,
+      ami,
+    ]
   }
 
   tags = {
@@ -43,13 +46,13 @@ EOF
   }
 }
 
-# module "peeringhaproxy2" {
-#   source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2"
-#   naming_suffix   = local.naming_suffix
-#   environment     = var.environment
-#   pipeline_name   = "peeringhaproxy2"
-#   ec2_instance_id = aws_instance.peeringhaproxy2[0].id
-# }
+module "peeringhaproxy2" {
+  source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2"
+  naming_suffix   = local.naming_suffix
+  environment     = var.environment
+  pipeline_name   = "peeringhaproxy2"
+  ec2_instance_id = aws_instance.peeringhaproxy2[0].id
+}
 
 resource "aws_instance" "peeringhaproxy2" {
   ami                    = data.aws_ami.dq-peering-haproxy.id
@@ -64,7 +67,10 @@ resource "aws_instance" "peeringhaproxy2" {
   lifecycle {
     prevent_destroy = true
 
-    ignore_changes = [ami]
+    ignore_changes = [
+      user_data,
+      ami,
+    ]
   }
 
   tags = {
