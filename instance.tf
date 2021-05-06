@@ -46,13 +46,13 @@ EOF
   }
 }
 
-# module "peeringhaproxy2" {
-#   source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2"
-#   naming_suffix   = local.naming_suffix
-#   environment     = var.namespace
-#   pipeline_name   = "peeringhaproxy2"
-#   ec2_instance_id = aws_instance.peeringhaproxy2.id
-# }
+module "peeringhaproxy2" {
+  source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2"
+  naming_suffix   = local.naming_suffix
+  environment     = var.namespace
+  pipeline_name   = "peeringhaproxy2"
+  ec2_instance_id = aws_instance.peeringhaproxy2.id
+}
 
 resource "aws_instance" "peeringhaproxy2" {
   ami                    = data.aws_ami.dq-peering-haproxy.id
