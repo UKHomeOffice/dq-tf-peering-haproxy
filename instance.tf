@@ -46,13 +46,13 @@ EOF
   }
 }
 
-module "peeringhaproxy2" {
-  source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2"
-  naming_suffix   = local.naming_suffix
-  environment     = var.environment
-  pipeline_name   = "peeringhaproxy2"
-  ec2_instance_id = aws_instance.peeringhaproxy2[0].id
-}
+# module "peeringhaproxy2" {
+#   source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2"
+#   naming_suffix   = local.naming_suffix
+#   environment     = var.environment
+#   pipeline_name   = "peeringhaproxy2"
+#   ec2_instance_id = aws_instance.peeringhaproxy2[0].id
+# }
 
 resource "aws_instance" "peeringhaproxy2" {
   ami                    = data.aws_ami.dq-peering-haproxy.id
@@ -63,6 +63,18 @@ resource "aws_instance" "peeringhaproxy2" {
   user_data              = var.s3_bucket_name
   key_name               = var.key_name
   iam_instance_profile   = aws_iam_instance_profile.haproxy_server_instance_profile.id
+
+  user_data = <<EOF
+#!/bin/bash
+
+set -e
+
+#log output from this user_data script
+exec > >(tee /var/log/user-data.log|logger -t user-data ) 2>&1
+
+# start the cloud watch agent
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -s -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
+EOF
 
   lifecycle {
     prevent_destroy = true
