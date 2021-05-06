@@ -8,7 +8,7 @@ module "ec2_alarms_peeringhaproxy" {
   naming_suffix   = local.naming_suffix
   environment     = var.environment
   pipeline_name   = "peeringhaproxy"
-  ec2_instance_id = aws_instance.peeringhaproxy[0].id
+  ec2_instance_id = aws_instance.peeringhaproxy.id
 }
 
 resource "aws_instance" "peeringhaproxy" {
@@ -51,7 +51,7 @@ EOF
 #   naming_suffix   = local.naming_suffix
 #   environment     = var.environment
 #   pipeline_name   = "peeringhaproxy2"
-#   ec2_instance_id = aws_instance.peeringhaproxy2[0].id
+#   ec2_instance_id = aws_instance.peeringhaproxy2.id
 # }
 
 resource "aws_instance" "peeringhaproxy2" {
