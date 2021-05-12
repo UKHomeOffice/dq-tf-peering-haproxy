@@ -52,11 +52,11 @@ variable "namespace" {
 }
 
 variable "instance_type_notprod" {
-  default = "t3.small"
+  default = "t3.medium"
 }
 
 variable "instance_type_prod" {
-  default = "t3.small"
+  default = "t3.medium"
 }
 
 variable "SGCIDRs" {
