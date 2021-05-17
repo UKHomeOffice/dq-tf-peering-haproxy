@@ -13,7 +13,7 @@ module "ec2_alarms_peeringhaproxy" {
 
 resource "aws_instance" "peeringhaproxy" {
   ami                    = data.aws_ami.dq-peering-haproxy.id
-  instance_type          = var.namespace == "prod" ? var.instance_type_prod : var.instance_type_notprod
+  instance_type          = "t3a.micro"
   subnet_id              = aws_subnet.haproxy_subnet.id
   vpc_security_group_ids = [aws_security_group.haproxy.id]
   private_ip             = var.haproxy_private_ip
@@ -31,7 +31,7 @@ exec > >(tee /var/log/user-data.log|logger -t user-data ) 2>&1
 echo "#!/bin/sh
 aws s3 cp s3://s3-dq-peering-haproxy-config-bucket-${var.namespace}/haproxy.cfg /etc/haproxy/haproxy.cfg --region eu-west-2
 /etc/ssl/certs/make-dummy-cert /etc/ssl/certs/self-signed-cert
-sudo haproxy -f /etc/haproxy/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)
+sudo haproxy -f /etc/haproxy/haproxy.cfg -p /var/run/haproxy.pid -sf \$(cat /var/run/haproxy.pid)
 " > /home/centos/gets3content.sh
 
 echo "#Start the cloud watch agent"
@@ -62,7 +62,7 @@ module "peeringhaproxy2" {
 
 resource "aws_instance" "peeringhaproxy2" {
   ami                    = data.aws_ami.dq-peering-haproxy.id
-  instance_type          = var.namespace == "prod" ? var.instance_type_prod : var.instance_type_notprod
+  instance_type          = "t3a.micro"
   subnet_id              = aws_subnet.haproxy_subnet.id
   vpc_security_group_ids = [aws_security_group.haproxy.id]
   private_ip             = var.haproxy_private_ip2
@@ -80,7 +80,7 @@ exec > >(tee /var/log/user-data.log|logger -t user-data ) 2>&1
 echo "#!/bin/sh
 aws s3 cp s3://s3-dq-peering-haproxy-config-bucket-${var.namespace}/haproxy.cfg /etc/haproxy/haproxy.cfg --region eu-west-2
 /etc/ssl/certs/make-dummy-cert /etc/ssl/certs/self-signed-cert
-sudo haproxy -f /etc/haproxy/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)
+sudo haproxy -f /etc/haproxy/haproxy.cfg -p /var/run/haproxy.pid -sf \$(cat /var/run/haproxy.pid)
 " > /home/centos/gets3content.sh
 
 echo "#Start the cloud watch agent"
