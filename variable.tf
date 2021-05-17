@@ -51,14 +51,6 @@ variable "az" {
 variable "namespace" {
 }
 
-variable "instance_type_notprod" {
-  default = "t3.medium"
-}
-
-variable "instance_type_prod" {
-  default = "t3.medium"
-}
-
 variable "SGCIDRs" {
   description = "Ingress CIDR block for the HAProxy Security Group."
   type        = list(string)
