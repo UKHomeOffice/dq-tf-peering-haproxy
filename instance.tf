@@ -28,7 +28,6 @@ set -e
 #log output from this user_data script
 exec > >(tee /var/log/user-data.log|logger -t user-data ) 2>&1
 
-echo "#!/bin/sh
 echo "#Create env_vars file"
 touch /home/centos/env_vars
 echo "export s3_bucket_name=s3-dq-peering-haproxy-config-bucket-${var.namespace}" > /home/centos/env_vars
