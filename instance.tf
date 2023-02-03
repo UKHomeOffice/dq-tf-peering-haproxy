@@ -12,6 +12,7 @@ module "ec2_alarms_peeringhaproxy" {
 }
 
 resource "aws_instance" "peeringhaproxy" {
+  count                  = var.environment == "prod" ? "2" : "2" 
   ami                    = data.aws_ami.dq-peering-haproxy.id
   instance_type          = "t3a.micro"
   subnet_id              = aws_subnet.haproxy_subnet.id
