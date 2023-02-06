@@ -12,7 +12,6 @@ module "ec2_alarms_peeringhaproxy" {
 }
 
 resource "aws_instance" "peeringhaproxy" {
-  count                  = var.environment == "prod" ? "2" : "2" 
   ami                    = data.aws_ami.dq-peering-haproxy.id
   instance_type          = "t3a.micro"
   subnet_id              = aws_subnet.haproxy_subnet.id
@@ -30,8 +29,8 @@ set -e
 exec > >(tee /var/log/user-data.log|logger -t user-data ) 2>&1
 
 echo "#Create env_vars file"
-touch /home/centos/env_vars
-echo "export s3_bucket_name=s3-dq-peering-haproxy-config-bucket-${var.namespace}" > /home/centos/env_vars
+touch /home/ec2-user/env_vars
+echo "export s3_bucket_name=s3-dq-peering-haproxy-config-bucket-${var.namespace}" > /home/ec2-user/env_vars
 
 echo "#Start the cloud watch agent"
 /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -s -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
@@ -77,8 +76,8 @@ set -e
 exec > >(tee /var/log/user-data.log|logger -t user-data ) 2>&1
 
 echo "#Create env_vars file"
-touch /home/centos/env_vars
-echo "export s3_bucket_name=s3-dq-peering-haproxy-config-bucket-${var.namespace}" > /home/centos/env_vars
+touch /home/ec2-user/env_vars
+echo "export s3_bucket_name=s3-dq-peering-haproxy-config-bucket-${var.namespace}" > /home/ec2-user/env_vars
 
 echo "#Start the cloud watch agent"
 /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -s -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
