@@ -5,7 +5,7 @@ data "aws_ami" "dq-peering-haproxy" {
     name = "name"
 
     values = [
-      "dq-peering-haproxy 398*",
+      "dq-peering-haproxy 401*",
     ]
   }
 
