@@ -121,6 +121,13 @@ resource "aws_iam_role" "haproxy_ec2_server_role" {
         ]
       },
       "Action": "sts:AssumeRole"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+          "Action": "ec2:ModifyInstanceMetadataOptions"
+      ],
+      "Resource": "arn:aws:ec2:*:*:instance/*"
     }
   ]
 }
