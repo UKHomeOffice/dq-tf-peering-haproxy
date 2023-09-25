@@ -80,6 +80,13 @@ resource "aws_iam_policy" "haproxy_bucket_policy" {
         "s3:ListObject"
       ],
       "Resource": ["${aws_s3_bucket.haproxy_config_bucket.arn}/*"]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+         "ec2:ModifyInstanceMetadataOptions"
+      ],
+      "Resource": "arn:aws:ec2:*:*:instance/*"
     }
   ]
 }
