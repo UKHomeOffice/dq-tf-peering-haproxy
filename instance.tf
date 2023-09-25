@@ -32,6 +32,9 @@ echo "#Create env_vars file"
 touch /home/ec2-user/env_vars
 echo "export s3_bucket_name=s3-dq-peering-haproxy-config-bucket-${var.namespace}" > /home/ec2-user/env_vars
 
+echo "Enforcing imdsv2 on ec2 instance"
+curl http://169.254.169.254/latest/meta-data/instance-id | xargs -I {} aws ec2 modify-instance-metadata-options --instance-id {} --http-endpoint enabled --http-tokens required
+
 echo "#Start the cloud watch agent"
 /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -s -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
 EOF
