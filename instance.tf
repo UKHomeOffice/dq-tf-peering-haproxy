@@ -4,7 +4,7 @@ resource "aws_iam_role_policy_attachment" "cloud_watch_agent" {
 }
 
 module "ec2_alarms_peeringhaproxy" {
-  source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2"
+  source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2?ref=yel-8750-migrate-tf-version"
   naming_suffix   = local.naming_suffix
   environment     = var.namespace
   pipeline_name   = "peeringhaproxy"
@@ -54,7 +54,7 @@ EOF
 }
 
 module "peeringhaproxy2" {
-  source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2"
+  source          = "github.com/UKHomeOffice/dq-tf-cloudwatch-ec2?ref=yel-8750-migrate-tf-version"
   naming_suffix   = local.naming_suffix
   environment     = var.namespace
   pipeline_name   = "peeringhaproxy2"
