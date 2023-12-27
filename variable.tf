@@ -63,3 +63,8 @@ variable "SGCIDRs" {
   description = "Ingress CIDR block for the HAProxy Security Group."
   type        = list(string)
 }
+
+variable "SSH_SGCIDRs" {
+  description = "Other Ingress CIDR block for the HAProxy Security Group."
+  type        = list(string)
+}

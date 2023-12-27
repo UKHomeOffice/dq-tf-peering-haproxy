@@ -111,11 +111,19 @@ resource "aws_security_group" "haproxy" {
   }
 
   ingress {
-    from_port = 0
-    to_port   = 0
+    from_port = 5000 - 9000
+    to_port   = 5000 - 9000
     protocol  = "-1"
 
     cidr_blocks = var.SGCIDRs
+  }
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "-1"
+
+    cidr_blocks = var.SSH_SGCIDRs
   }
 
   egress {
