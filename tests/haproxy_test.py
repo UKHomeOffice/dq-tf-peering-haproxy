@@ -26,6 +26,7 @@ class TestE2E(unittest.TestCase):
                 haproxy_private_ip2    = "1.2.3.4"
                 name_prefix            = "dq-"
                 SGCIDRs                = ["1.2.3.0/24"]
+                SSH_SGCIDRs                = ["1.2.3.0/24"]
                 az                     = "foo"
                 route_table_id         = "1234"
                 s3_bucket_name         = "abcd"

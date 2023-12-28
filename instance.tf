@@ -89,14 +89,14 @@ echo "#Start the cloud watch agent"
 /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -s -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
 EOF
 
-  lifecycle {
-    prevent_destroy = true
+  # lifecycle {
+  #   prevent_destroy = true
 
-    ignore_changes = [
-      user_data,
-      ami,
-    ]
-  }
+  #   ignore_changes = [
+  #     user_data,
+  #     ami,
+  #   ]
+  # }
 
   tags = {
     Name = "ec2-${local.naming_suffix}"
@@ -111,11 +111,19 @@ resource "aws_security_group" "haproxy" {
   }
 
   ingress {
-    from_port = 0
-    to_port   = 0
+    from_port = 5000 - 9000
+    to_port   = 5000 - 9000
     protocol  = "-1"
 
     cidr_blocks = var.SGCIDRs
+  }
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "-1"
+
+    cidr_blocks = var.SSH_SGCIDRs
   }
 
   egress {
