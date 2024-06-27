@@ -33,7 +33,7 @@ resource "aws_s3_bucket" "haproxy_config_bucket" {
     }
     noncurrent_version_expiration {
       days = 1
-    } 
+    }
   }
 
   logging {
