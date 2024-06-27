@@ -21,6 +21,21 @@ resource "aws_s3_bucket" "haproxy_config_bucket" {
     enabled = true
   }
 
+  lifecycle_rule {
+    enabled = true
+    transition {
+      days          = 0
+      storage_class = "INTELLIGENT_TIERING"
+    }
+    noncurrent_version_transition {
+      days          = 0
+      storage_class = "INTELLIGENT_TIERING"
+    }
+    noncurrent_version_expiration {
+      days = 1
+    }
+  }
+
   logging {
     target_bucket = var.log_archive_s3_bucket
     target_prefix = "${var.service}-log/"
