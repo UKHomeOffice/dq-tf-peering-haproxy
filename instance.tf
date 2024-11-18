@@ -39,14 +39,14 @@ echo "#Start the cloud watch agent"
 /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -s -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
 EOF
 
-  lifecycle {
-    prevent_destroy = true
-
-    ignore_changes = [
-      user_data,
-      ami,
-    ]
-  }
+  #lifecycle {
+  #  prevent_destroy = true
+  #
+  #  ignore_changes = [
+  #    user_data,
+  #    ami,
+  #  ]
+  #}
 
   tags = {
     Name = "ec2-${local.naming_suffix}"
@@ -89,14 +89,14 @@ echo "#Start the cloud watch agent"
 /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -s -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
 EOF
 
-  lifecycle {
-    prevent_destroy = true
-
-    ignore_changes = [
-      user_data,
-      ami,
-    ]
-  }
+  #lifecycle {
+  #  prevent_destroy = true
+  #
+  #  ignore_changes = [
+  #    user_data,
+  #    ami,
+  #  ]
+  #}
 
   tags = {
     Name = "ec2-${local.naming_suffix}"
