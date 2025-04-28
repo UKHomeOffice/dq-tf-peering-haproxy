@@ -5,7 +5,7 @@ data "aws_ami" "dq-peering-haproxy" {
     name = "name"
 
     values = [
-      var.namespace == "prod" ? "dq-peering-haproxy 507*" : "dq-peering-haproxy 543*",
+      var.namespace == "prod" ? "dq-peering-haproxy 507*" : "dq-peering-haproxy 548*",
     ]
   }
 
