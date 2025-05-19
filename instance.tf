@@ -13,7 +13,7 @@ module "ec2_alarms_peeringhaproxy" {
 
 resource "aws_instance" "peeringhaproxy" {
   ami                    = data.aws_ami.dq-peering-haproxy.id
-  instance_type          = "t3a.micro"
+  instance_type          = "t3a.medium"
   subnet_id              = aws_subnet.haproxy_subnet.id
   vpc_security_group_ids = [aws_security_group.haproxy.id]
   private_ip             = var.haproxy_private_ip
@@ -45,6 +45,7 @@ EOF
     ignore_changes = [
       user_data,
       ami,
+      instance_type,
     ]
   }
 
@@ -63,7 +64,7 @@ module "peeringhaproxy2" {
 
 resource "aws_instance" "peeringhaproxy2" {
   ami                    = data.aws_ami.dq-peering-haproxy.id
-  instance_type          = "t3a.micro"
+  instance_type          = "t3a.medium"
   subnet_id              = aws_subnet.haproxy_subnet.id
   vpc_security_group_ids = [aws_security_group.haproxy.id]
   private_ip             = var.haproxy_private_ip2
@@ -95,6 +96,7 @@ EOF
     ignore_changes = [
       user_data,
       ami,
+      instance_type,
     ]
   }
 
