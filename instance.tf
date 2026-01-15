@@ -36,12 +36,6 @@ echo "#Create env_vars file"
 touch /home/ec2-user/env_vars
 echo "export s3_bucket_name=s3-dq-peering-haproxy-config-bucket-${var.namespace}" > /home/ec2-user/env_vars
 
-echo "#Fetch HAProxy config from S3"
-/bin/su - ec2-user -c "source /home/ec2-user/env_vars && python3 /home/ec2-user/gets3content.py" || exit 1
-
-echo "#Reload HAProxy to pick up new config"
-systemctl reload haproxy || systemctl restart haproxy
-
 echo "#Start the cloud watch agent"
 /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -s -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
 EOF
