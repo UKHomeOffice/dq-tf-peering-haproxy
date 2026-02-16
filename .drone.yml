@@ -40,15 +40,13 @@ environment:
 x-anchors:
   retrieve-aws-key: &retrieve-aws-key
     - vault --version
-    # All Terraform operations need access to an AWS Account
-    # Retrieve vault secrets directly into env vars (no files)
-    - CREDS_JSON="$(vault read -format=json aws_dacc_dq/creds/drone)"
-    - export LEASE_ID="$(printf '%s\n' "$CREDS_JSON" | jq -r '.lease_id')"
-    - export AWS_ACCESS_KEY_ID="$(printf '%s\n' "$CREDS_JSON" | jq -r '.data.access_key')"
-    - export AWS_SECRET_ACCESS_KEY="$(printf '%s\n' "$CREDS_JSON" | jq -r '.data.secret_key')"
+    # Retrieve vault secrets directly into env vars
+    - CREDS_OUTPUT="$(vault read -format=json aws_dacc_dq/creds/drone)"
+    - export LEASE_ID="$(echo "$CREDS_OUTPUT" | awk -F'"' '/lease_id/{print $4}')"
+    - export AWS_ACCESS_KEY_ID="$(echo "$CREDS_OUTPUT" | awk -F'"' '/access_key/{print $4}')"
+    - export AWS_SECRET_ACCESS_KEY="$(echo "$CREDS_OUTPUT" | awk -F'"' '/secret_key/{print $4}')"
     # Update the token TTL to 10mins
     - vault lease renew -increment=3600 "${LEASE_ID}"
-    # Region as before
     - export AWS_DEFAULT_REGION="${AWS_REGION}"
 
   check-format: &check-format
