@@ -40,13 +40,16 @@ environment:
 x-anchors:
   retrieve-aws-key: &retrieve-aws-key
     - vault --version
-    # Retrieve vault secrets directly into env vars
-    - CREDS_OUTPUT="$(vault read -format=json aws_dacc_dq/creds/drone)"
-    - export LEASE_ID="$(echo "$CREDS_OUTPUT" | awk -F'"' '/lease_id/{print $4}')"
-    - export AWS_ACCESS_KEY_ID="$(echo "$CREDS_OUTPUT" | awk -F'"' '/access_key/{print $4}')"
-    - export AWS_SECRET_ACCESS_KEY="$(echo "$CREDS_OUTPUT" | awk -F'"' '/secret_key/{print $4}')"
-    # Update the token TTL to 10mins
+    - CREDS_OUTPUT="$(vault read aws_dacc_dq/creds/drone)"
+    # Your exact original parsing works on the captured output
+    - export LEASE_ID=$(echo "$CREDS_OUTPUT" | grep lease_id | awk '{print $2}')
+    - export ACCESS_KEY=$(echo "$CREDS_OUTPUT" | grep access_key | awk '{print $2}')
+    - export SECRET_KEY=$(echo "$CREDS_OUTPUT" | grep secret_key | awk '{print $2}')
+    # Renew lease
     - vault lease renew -increment=3600 "${LEASE_ID}"
+    # Export to AWS env vars (no file written)
+    - export AWS_ACCESS_KEY_ID="${ACCESS_KEY}"
+    - export AWS_SECRET_ACCESS_KEY="${SECRET_KEY}"
     - export AWS_DEFAULT_REGION="${AWS_REGION}"
 
   check-format: &check-format
