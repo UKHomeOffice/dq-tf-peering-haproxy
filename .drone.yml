@@ -42,9 +42,9 @@ x-anchors:
     - vault --version
     - CREDS_OUTPUT="$(vault read aws_dacc_dq/creds/drone)"
     # Your exact original parsing works on the captured output
-    - export LEASE_ID=$(echo "$CREDS_OUTPUT" | grep lease_id | awk '{print $2}')
-    - export ACCESS_KEY=$(echo "$CREDS_OUTPUT" | grep access_key | awk '{print $2}')
-    - export SECRET_KEY=$(echo "$CREDS_OUTPUT" | grep secret_key | awk '{print $2}')
+    - export LEASE_ID=$(echo "$CREDS_OUTPUT" | grep lease_id | awk -F ' ' '{print $2}')
+    - export ACCESS_KEY=$(echo "$CREDS_OUTPUT" | grep access_key | awk -F ' ' '{print $2}')
+    - export SECRET_KEY=$(echo "$CREDS_OUTPUT" | grep secret_key | awk -F ' ' '{print $2}')
     # Renew lease
     - vault lease renew -increment=3600 "${LEASE_ID}"
     # Export to AWS env vars (no file written)
