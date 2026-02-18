@@ -92,7 +92,7 @@ steps:
 
 - name: run-testrunner-tests
   pull: if-not-exists
-  image: *vault-image
+  image: *testrunner-image
   commands: *run-testrunner-tests
   environment:
     VAULT_ADDR:
