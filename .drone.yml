@@ -55,6 +55,9 @@ x-anchors:
     - echo "export AWS_ACCESS_KEY_ID=$${ACCESS_KEY}" > $${AWS_SECRETS_FILE}
     - echo "export AWS_SECRET_ACCESS_KEY=$${SECRET_KEY}" >> $${AWS_SECRETS_FILE}
     - echo "export AWS_DEFAULT_REGION=$${AWS_REGION}" >> $${AWS_SECRETS_FILE}
+    # Get AWS secrets for TF State
+    - export AWS_SECRETS_FILE="/drone/src/set_aws_secrets.sh"
+    - source $${AWS_SECRETS_FILE}
     - python -m unittest tests/*_test.py
 
   check-format: &check-format
