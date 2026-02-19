@@ -39,7 +39,7 @@ environment:
 
 x-anchors:
   retrieve-aws-key: &retrieve-aws-key |
-set -euo pipefail
+    set -euo pipefail
     vault --version
 
     CREDS_JSON="$(vault read -format=json aws_dacc_dq/creds/drone)"
@@ -103,7 +103,8 @@ steps:
 - name: run-testrunner-tests
   pull: if-not-exists
   image: *testrunner-image
-  commands: *retrieve-aws-key
+  commands: 
+    -   *retrieve-aws-key
   environment:
     VAULT_ADDR:
       from_secret: VAULT_ADDR_NOTPROD
