@@ -38,36 +38,38 @@ environment:
 #     - echo "export AWS_DEFAULT_REGION=$${AWS_REGION}" >> $${AWS_SECRETS_FILE}
 
 x-anchors:
-  retrieve-aws-key: &retrieve-aws-key
-    - |
-      set -euo pipefail
-      vault --version
-      CREDS="$(vault read aws_dacc_dq/creds/drone)"
-      export LEASE_ID="$(printf '%s\n' "$CREDS" | awk '$1=="lease_id"{print $2}')"
-      export AWS_ACCESS_KEY_ID="$(printf '%s\n' "$CREDS" | awk '$1=="access_key"{print $2}')"
-      export AWS_SECRET_ACCESS_KEY="$(printf '%s\n' "$CREDS" | awk '$1=="secret_key"{print $2}')"
-      export AWS_SESSION_TOKEN="$(printf '%s\n' "$CREDS" | awk '$1=="session_token"{print $2}')"
-      export AWS_DEFAULT_REGION="${AWS_REGION}"
+  retrieve-aws-key: &retrieve-aws-key |
+    set -euo pipefail
+    vault --version
 
-      vault lease renew -increment=3600 "$LEASE_ID"
+    CREDS_JSON="$(vault read -format=json aws_dacc_dq/creds/drone)"
+
+    export AWS_ACCESS_KEY_ID="$(printf '%s' "$CREDS_JSON" | jq -r '.data.access_key')"
+    export AWS_SECRET_ACCESS_KEY="$(printf '%s' "$CREDS_JSON" | jq -r '.data.secret_key')"
+    export AWS_SESSION_TOKEN="$(printf '%s' "$CREDS_JSON" | jq -r '.data.session_token')"
+    export AWS_DEFAULT_REGION="${AWS_REGION}"
+
+    LEASE_ID="$(printf '%s' "$CREDS_JSON" | jq -r '.lease_id')"
+    vault lease renew -increment=3600 "$LEASE_ID"
 
   check-format: &check-format
     - terraform --version
     - terraform fmt --diff --check
 
-  run-testrunner-tests: &run-testrunner-tests
-    - |
-      set -euo pipefail
-      vault --version
-      CREDS="$(vault read aws_dacc_dq/creds/drone)"
-      export LEASE_ID="$(printf '%s\n' "$CREDS" | awk '$1=="lease_id"{print $2}')"
-      export AWS_ACCESS_KEY_ID="$(printf '%s\n' "$CREDS" | awk '$1=="access_key"{print $2}')"
-      export AWS_SECRET_ACCESS_KEY="$(printf '%s\n' "$CREDS" | awk '$1=="secret_key"{print $2}')"
-      export AWS_SESSION_TOKEN="$(printf '%s\n' "$CREDS" | awk '$1=="session_token"{print $2}')"
-      export AWS_DEFAULT_REGION="${AWS_REGION}"
+  run-testrunner-tests: &run-testrunner-tests |
+    set -euo pipefail
+    vault --version
 
-      vault lease renew -increment=3600 "$LEASE_ID"
-      python -m unittest tests/*_test.py
+    CREDS_JSON="$(vault read -format=json aws_dacc_dq/creds/drone)"
+
+    export AWS_ACCESS_KEY_ID="$(printf '%s' "$CREDS_JSON" | jq -r '.data.access_key')"
+    export AWS_SECRET_ACCESS_KEY="$(printf '%s' "$CREDS_JSON" | jq -r '.data.secret_key')"
+    export AWS_SESSION_TOKEN="$(printf '%s' "$CREDS_JSON" | jq -r '.data.session_token')"
+    export AWS_DEFAULT_REGION="${AWS_REGION}"
+
+    LEASE_ID="$(printf '%s' "$CREDS_JSON" | jq -r '.lease_id')"
+    vault lease renew -increment=3600 "$LEASE_ID"
+    python -m unittest tests/*_test.py
 
 
 steps:
