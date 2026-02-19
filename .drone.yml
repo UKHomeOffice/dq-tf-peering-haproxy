@@ -46,7 +46,7 @@ x-anchors:
 
     export AWS_ACCESS_KEY_ID="$(printf '%s' "$CREDS_JSON" | jq -r '.data.access_key')"
     export AWS_SECRET_ACCESS_KEY="$(printf '%s' "$CREDS_JSON" | jq -r '.data.secret_key')"
-    export AWS_SESSION_TOKEN="$(printf '%s' "$CREDS_JSON" | jq -r '.data.session_token')"
+    export AWS_SESSION_TOKEN="$(printf '%s' "$CREDS_JSON" | jq -r '.data.security_token')"
     export AWS_DEFAULT_REGION="${AWS_REGION}"
 
     LEASE_ID="$(printf '%s' "$CREDS_JSON" | jq -r '.lease_id')"
