@@ -56,6 +56,7 @@ x-anchors:
     : "${AWS_ACCESS_KEY_ID:?missing access key}"
     : "${AWS_SECRET_ACCESS_KEY:?missing secret key}"
     : "${AWS_SESSION_TOKEN:?missing session token}"
+    python -m unittest tests/*_test.py
 
   check-format: &check-format
     - terraform --version
